@@ -1,62 +1,79 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
-interface HealthStatus {
-  status: string;
-  message: string;
+interface Meeting {
+  id: number;
+  title: string;
+  content: string;
+  summary: string | null;
+  created_at: string;
 }
 
 export default function Home() {
-  const [health, setHealth] = useState<HealthStatus | null>(null);
+  const [meetings, setMeetings] = useState<Meeting[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/health')
+    fetch('/api/meetings')
       .then((res) => res.json())
       .then((data) => {
-        setHealth(data);
+        setMeetings(data);
         setLoading(false);
       })
-      .catch(() => {
-        setHealth({ status: 'error', message: '백엔드 연결 실패' });
+      .catch((error) => {
+        console.error('Error fetching meetings:', error);
         setLoading(false);
       });
   }, []);
 
-  return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
-      <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full mx-4">
-        <h1 className="text-3xl font-bold text-gray-800 text-center mb-6">
-          Module 5
-        </h1>
-        <p className="text-gray-600 text-center mb-8">
-          Next.js + FastAPI + SQLite
-        </p>
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      </div>
+    );
+  }
 
-        <div className="border-t pt-6">
-          <h2 className="text-lg font-semibold text-gray-700 mb-3">
-            백엔드 상태
-          </h2>
-          {loading ? (
-            <div className="flex items-center justify-center py-4">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
-            </div>
-          ) : (
-            <div
-              className={`p-4 rounded-lg ${
-                health?.status === 'ok'
-                  ? 'bg-green-50 text-green-700'
-                  : 'bg-red-50 text-red-700'
-              }`}
-            >
-              <p className="font-medium">
-                {health?.status === 'ok' ? '연결됨' : '연결 실패'}
-              </p>
-              <p className="text-sm mt-1">{health?.message}</p>
-            </div>
-          )}
+  return (
+    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-8">
+      <div className="max-w-4xl mx-auto">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-800">회의록 목록</h1>
+          <Link
+            href="/meetings/new"
+            className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition"
+          >
+            새 회의록 작성
+          </Link>
         </div>
+
+        {meetings.length === 0 ? (
+          <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
+            <p className="text-gray-500">회의록이 없습니다. 첫 회의록을 작성해보세요!</p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {meetings.map((meeting) => (
+              <Link
+                key={meeting.id}
+                href={`/meetings/${meeting.id}`}
+                className="block bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition"
+              >
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                  {meeting.title}
+                </h2>
+                {meeting.summary && (
+                  <p className="text-gray-600 line-clamp-2">{meeting.summary}</p>
+                )}
+                <p className="text-sm text-gray-400 mt-4">
+                  {new Date(meeting.created_at).toLocaleDateString('ko-KR')}
+                </p>
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
     </main>
   );

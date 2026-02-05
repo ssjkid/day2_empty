@@ -59,8 +59,47 @@
 
 ---
 
+## [2026-02-05 16:00] 회의록 요약기 MVP 구현
+
+### 변경된 파일
+
+#### Backend (신규)
+- `backend/app/models/meeting_record.py`: 회의록 DB 모델
+- `backend/app/schemas/meeting_record.py`: Pydantic 스키마
+- `backend/app/services/ai_service.py`: Google Gemini AI 요약 서비스
+- `backend/app/routers/meetings.py`: 회의록 CRUD API 엔드포인트
+- `backend/.env.example`: 환경 변수 예시
+- `backend/DEBUG_GUIDE.md`: 디버깅 가이드
+
+#### Backend (수정)
+- `backend/app/main.py`: dotenv 로드, meetings 라우터 등록
+- `backend/app/models/__init__.py`: MeetingRecord import
+- `backend/app/schemas/__init__.py`: 스키마 import
+- `backend/requirements.txt`: google-generativeai 추가
+
+#### Frontend (신규)
+- `frontend/src/app/meetings/new/page.tsx`: 회의록 작성 페이지
+- `frontend/src/app/meetings/[id]/page.tsx`: 회의록 상세 페이지
+- `frontend/src/lib/api.ts`: API 타입 정의
+
+#### Frontend (수정)
+- `frontend/src/app/page.tsx`: 회의록 목록 페이지로 변경
+- `frontend/package.json`: react-markdown, remark-gfm 추가
+- `frontend/tailwind.config.ts`: typography 플러그인 추가
+
+### 작업 요약
+- OpenAI → Google Gemini API로 변경 (완전 무료)
+- 회의록 CRUD API 구현 (생성, 조회, 삭제)
+- AI 3줄 요약 + 액션 아이템 추출 기능
+- 마크다운 렌더링 (react-markdown)
+- 디버깅 로깅 추가
+
+---
+
 ## 다음 스텝
 - [x] DB 스킬 정리 → 제외됨
 - [x] Git 레포지토리 초기화 및 push
+- [x] 회의록 요약기 Backend 구현
+- [x] 회의록 요약기 Frontend 구현
+- [ ] .env 파일 GEMINI_API_KEY 설정 및 테스트
 - [ ] FE-refactor, FE-TEST 스킬 추가 (필요시)
-- [ ] 스킬 실제 동작 테스트
