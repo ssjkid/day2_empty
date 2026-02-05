@@ -96,10 +96,29 @@
 
 ---
 
+## [2026-02-05 17:00] GUI 이미지 & 아이콘 적용
+
+### 변경된 파일
+
+#### Frontend (수정)
+- `frontend/src/app/page.tsx`: 빈 상태 일러스트 SVG, 카드 아이콘 추가
+- `frontend/src/app/meetings/new/page.tsx`: AI 로딩 애니메이션 (pulse, bounce)
+- `frontend/src/app/meetings/[id]/page.tsx`: 섹션별 아이콘 (스파클, 체크리스트, 문서)
+- `frontend/src/lib/api.ts`: API 타입 개선
+
+### 작업 요약
+- 빈 상태(Empty State) 일러스트: 문서+펜 SVG, bounce 애니메이션
+- AI 로딩 애니메이션: 스파클 아이콘 + 점 3개 bounce
+- 섹션 아이콘: AI 요약(indigo), 액션 아이템(green), 원본(gray)
+- 카드 아이콘: 문서 아이콘, 캘린더 아이콘
+
+---
+
 ## 다음 스텝
 - [x] DB 스킬 정리 → 제외됨
 - [x] Git 레포지토리 초기화 및 push
 - [x] 회의록 요약기 Backend 구현
 - [x] 회의록 요약기 Frontend 구현
+- [x] GUI 이미지 & 아이콘 적용
 - [ ] .env 파일 GEMINI_API_KEY 설정 및 테스트
-- [ ] FE-refactor, FE-TEST 스킬 추가 (필요시)
+- [ ] 통합 테스트 (Backend + Frontend)

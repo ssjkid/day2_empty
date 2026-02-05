@@ -91,9 +91,25 @@ export default function NewMeetingPage() {
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition disabled:opacity-50"
+              className="flex-1 bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition disabled:opacity-50 flex items-center justify-center gap-3"
             >
-              {loading ? 'AI 요약 생성 중...' : '회의록 저장'}
+              {loading ? (
+                <>
+                  {/* AI 스파클 아이콘 */}
+                  <svg className="w-6 h-6 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                  </svg>
+                  <span>AI 요약 생성 중...</span>
+                  {/* 애니메이션 점 */}
+                  <div className="flex gap-1">
+                    <span className="w-2 h-2 bg-white rounded-full animate-bounce" style={{animationDelay: '0ms'}}></span>
+                    <span className="w-2 h-2 bg-white rounded-full animate-bounce" style={{animationDelay: '150ms'}}></span>
+                    <span className="w-2 h-2 bg-white rounded-full animate-bounce" style={{animationDelay: '300ms'}}></span>
+                  </div>
+                </>
+              ) : (
+                '회의록 저장'
+              )}
             </button>
           </div>
         </form>

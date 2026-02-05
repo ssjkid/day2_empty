@@ -57,3 +57,36 @@ export async function deleteMeeting(id: number): Promise<void> {
     throw new Error('Failed to delete meeting');
   }
 }
+
+// 회의록 검색
+export async function searchMeetings(query: string): Promise<Meeting[]> {
+  const res = await fetch(`/api/meetings?q=${encodeURIComponent(query)}`);
+  if (!res.ok) {
+    throw new Error('Failed to search meetings');
+  }
+  return res.json();
+}
+
+export interface UpdateMeetingRequest {
+  title: string;
+  content: string;
+  regenerate_summary?: boolean;
+}
+
+// 회의록 수정
+export async function updateMeeting(
+  id: number,
+  data: UpdateMeetingRequest
+): Promise<Meeting> {
+  const res = await fetch(`/api/meetings/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    throw new Error('Failed to update meeting');
+  }
+  return res.json();
+}
